@@ -18,6 +18,7 @@ import { AuthContext } from '../context/authContext';
 
 
   export default function AddAvenger() {
+    
     const [image,setImage] = useState("")
     const [name,setName] = useState("")
     const [actorName,setActorName] = useState("")
