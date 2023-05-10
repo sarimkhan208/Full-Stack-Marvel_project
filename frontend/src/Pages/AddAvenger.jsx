@@ -27,7 +27,9 @@ import { AuthContext } from '../context/authContext';
 
 
     const handleClick = ()=>{
-      if(isAuth){
+      if(!image || !name  || !actorName){
+        alert("Please fill all the field")
+      }else{
         let payload = {
           image:image,
           title:name,
@@ -36,24 +38,25 @@ import { AuthContext } from '../context/authContext';
         setIsLoading(true)
         axios.post(`${baseURL}/marvel/create`,payload,{
           headers: {
-            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         })
         .then((res)=>{
-          setIsLoading(true)
-          alert("An avenger is added to the team")
+          if(res.data.msg == 'Super Hero has been added'){
+            alert("An avenger is added to the team")
+          }
+          setIsLoading(false)
+          
         })
         .catch((err)=>{
+          alert("Please Login first")
           setIsLoading(false)
-          alert(err)
+          navigate('/signin')
         })
   
         setImage("")
         setName("")
         setActorName("")
-      }else{
-        alert("Please login first")
-        return navigate('/signin')
       }
     }
   
@@ -63,7 +66,7 @@ import { AuthContext } from '../context/authContext';
         align={'center'}
         justify={'center'}
         bg={useColorModeValue('black', 'black')}>
-        <Stack spacing={8} mx={'auto'} width={'40%'} py={12} px={6}>
+        <Stack spacing={8} mx={'auto'} width={{base:'90%',sm:'40%'}} py={12} px={6}>
           <Stack align={'center'}>
             <Heading fontSize={'4xl'} color={'red'} textAlign={'center'}>
               Add Your Avenger here....

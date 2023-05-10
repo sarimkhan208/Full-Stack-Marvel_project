@@ -47,8 +47,8 @@ import { AuthContext } from '../context/authContext';
 
 
     const handleUpdate = ()=>{
-        if(isAuth){
-          let payload = {}
+
+        let payload = {}
         if(image){
           payload.image=image
         }
@@ -65,37 +65,33 @@ import { AuthContext } from '../context/authContext';
           setIsLoading(true)
           axios.patch(`${baseURL}/marvel/update/${id}`,payload,{
             headers: {
-              'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
           })
           .then((res)=>{
             setIsLoading(false)
             if(res.data.msg == "You are not authorized to do this action"){
-              alert("Either you're not login or You are not authorized to do this action")
+              alert("You are not authorized to do this action")
             }else{
               alert("An Avenger has been Updated")
             }
           })
           .catch((err)=>{
-            setIsLoading(false)
+            alert("Please Login first")
+            navigate("/signin")
             setIsLoading(false)
           })
         }
-      }
-      else{
-        alert("Please login first")
-        return navigate('/signin')
-      }
+      
+      
     }
   
     return (
       <Flex
-        
-        minH={'100vh'}
         align={'center'}
         justify={'center'}
         bg={useColorModeValue('black', 'black')}>
-        <Stack spacing={8} mx={'auto'} width={'40%'} py={12} px={6}>
+        <Stack spacing={8} mx={'auto'} width={{base:'90%',sm:'40%'}} py={12} px={6}>
           <Stack align={'center'}>
             <Heading fontSize={'4xl'} color={'red'} textAlign={'center'}>
               Edit Your Avenger

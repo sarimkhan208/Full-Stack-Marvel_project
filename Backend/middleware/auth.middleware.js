@@ -13,7 +13,7 @@ const auth = async (req,res,next) => {
                 res.send({"msg":"Pls Login!!!"})
             }
         }catch(err){
-            res.status(400).send({"err":err.message})
+            res.status(400).send({"err":"in auth"})
         }
     }else{
         res.status(200).send({"msg":"Please Login first"})

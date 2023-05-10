@@ -9,7 +9,7 @@ marvelRouter.post("/create",async (req,res)=>{
         await superHero.save()
         res.status(200).send({"msg":"Super Hero has been added"})
     }catch(err){
-        res.status(400).send({"Error":err.message})
+        res.status(400).send({"Error":err})
     }
 })
 

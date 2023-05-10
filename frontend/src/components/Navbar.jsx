@@ -14,17 +14,42 @@ import {
     useColorModeValue,
     useDisclosure,
     Image,
+    useToast,
+    VStack,
   } from '@chakra-ui/react';
   import {
     HamburgerIcon,
     CloseIcon,
     ChevronDownIcon,
   } from '@chakra-ui/icons';
-
-  import { Link as RouterLink } from 'react-router-dom';
+import {FiUser} from 'react-icons/fi'
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
+import { useContext } from 'react';
   
   export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure();
+    
+    const isAuth = localStorage.getItem("token")
+    const username = localStorage.getItem("username")
+
+    const navigate = useNavigate()
+    const toast = useToast()
+
+    const handleLogout = ()=>{
+      localStorage.setItem('token','')
+      localStorage.setItem('username','user')
+      toast({
+        title: 'Logout Successfull.',
+        description: "User has been Logout",
+        status: 'error',
+        position : 'top',
+        duration: 1200,
+        isClosable: true,
+      })
+      navigate("/")
+    }
+
   
     return (
       <Box  >
@@ -34,7 +59,7 @@ import {
           color={useColorModeValue('white', 'white')}
           minH={'60px'}
           py={{ base: 2 }}
-          px={{ base: 4 }}
+          px={{ base: 2 }}
           borderBottom={1}
           borderStyle={'solid'}
           borderColor={useColorModeValue('gray.200', 'gray.900')}
@@ -44,21 +69,16 @@ import {
             ml={{ base: -2 }}
             display={{ base: 'flex', md: 'none' }}>
             <IconButton
+              _hover={{bg:'black'}}
               onClick={onToggle}
               icon={
-                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />
+                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon _hover={{bg:'black'}} color='red' w={5} h={5} />
               }
               variant={'ghost'}
               aria-label={'Toggle Navigation'}
             />
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-            {/* <Text
-              textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-              fontFamily={'heading'}
-              color={useColorModeValue('white', 'white')}>
-              Logo
-            </Text> */}
             <RouterLink to='/' >
               <Image width={'200px'} height={'50px'} src='https://i.postimg.cc/XvgWHQg6/logo.png' alt='logo' />
             </RouterLink>
@@ -73,18 +93,56 @@ import {
             justify={'flex-end'}
             direction={'row'}
             spacing={6}>
-            <RouterLink to="/signin" >
-              <Button
-                fontSize={'md'}
-                fontWeight={600}
-                variant={'link'}
-                color={'white'}>
-                Sign In
-              </Button>
-            </RouterLink>
             <RouterLink to='/signup' >
               <Button
+                mt={3}
                 display={{ base: 'none', md: 'inline-flex' }}
+                fontSize={'sm'}
+                variant={'link'}
+                fontWeight={600}
+                color={'white'}
+                _hover={{
+                  color: 'pink.300',
+                }}>
+                Sign Up
+              </Button>
+            </RouterLink>
+
+
+            {
+                isAuth?<Box _hover={{cursor:'pointer'}} height={'100%'} width={{base:"50px",sm:'70px'}} ><VStack gap={0} >
+                  <Box width={'100%'} textAlign={'center'} ><Icon color='red' fontSize={{base:'14px',sm:'24px'}} as={FiUser} onClick={handleLogout} /></Box>
+                  <Box width={'100%'} textAlign={'center'} color='red'  fontSize={{base:'10px',sm:'13px'}} >{username}</Box>
+                  
+                  </VStack></Box>:<RouterLink to='/signin'>
+                  <Button
+                    fontSize={'sm'}
+                    fontWeight={600}
+                    color={'white'}
+                    bg={'#e23636'}
+                    borderRadius={'4px'}
+                    p={'8px'}
+                    _hover={{
+                      bg: 'pink.300',
+                    }}
+                    >
+                    Sign In
+                  </Button>
+                  </RouterLink>
+            }
+
+
+
+
+
+
+
+
+
+
+
+            {/* <RouterLink to="/signin" >
+              <Button
                 fontSize={'sm'}
                 fontWeight={600}
                 color={'white'}
@@ -93,10 +151,11 @@ import {
                 p={'8px'}
                 _hover={{
                   bg: 'pink.300',
-                }}>
-                Sign Up
+                }}
+                >
+                Sign In
               </Button>
-            </RouterLink>
+            </RouterLink> */}
           </Stack>
         </Flex>
   
@@ -188,7 +247,8 @@ import {
   const MobileNav = () => {
     return (
       <Stack
-        bg={useColorModeValue('white', 'gray.800')}
+        bg={useColorModeValue('red.500', 'gray.800')}
+        
         p={4}
         display={{ md: 'none' }}>
         {NAV_ITEMS.map((navItem) => (
@@ -214,7 +274,7 @@ import {
           }}>
           <Text
             fontWeight={600}
-            color={useColorModeValue('gray.600', 'gray.200')}>
+            color={useColorModeValue('white', 'gray.200')}>
             {label}
           </Text>
           {children && (
@@ -253,6 +313,6 @@ import {
   const NAV_ITEMS= [
     {
       label: 'Avengers',
-      href:""
+      href:"/marvelheroes"
     }
   ];

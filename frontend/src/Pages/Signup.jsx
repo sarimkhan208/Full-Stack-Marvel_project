@@ -58,13 +58,13 @@ import { baseURL } from '../BaseURL';
   
     return (
       <Flex
-        minH={'100vh'}
+        width={'100%'}
         align={'center'}
         justify={'center'}
         bg={useColorModeValue('black', 'black')}>
-        <Stack spacing={8} mx={'auto'} width={'40%'} py={12} px={6}>
+        <Stack spacing={8} mx={'auto'} width={{base:'90%',sm:'40%'}} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'4xl'} textAlign={'center'} color={'white'} >
+            <Heading fontSize={{base:'21px',sm:'4xl'}} textAlign={'center'} color={'white'} >
               Sign Up To be The Part Of <Image src='https://i.postimg.cc/XvgWHQg6/logo.png' />
             </Heading>
           </Stack>
@@ -124,7 +124,7 @@ import { baseURL } from '../BaseURL';
               </Stack>
               <Stack pt={6}>
                 <Text align={'center'} color={'white'}>
-                  Already a user? <RouterLink><Link color={'blue.400'}>Login</Link></RouterLink>
+                  Already a user? <RouterLink to='/signin' ><Link color={'blue.400'}>Login</Link></RouterLink>
                 </Text>
               </Stack>
             </Stack>

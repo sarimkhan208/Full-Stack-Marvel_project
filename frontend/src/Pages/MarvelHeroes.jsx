@@ -23,7 +23,6 @@ import {useNavigate} from 'react-router-dom'
 const MarvelHeroes = () => {
 
     const [marvelData,setMarvelData] = useState([])
-    const {isAuth} = useContext(AuthContext)
     const navigate = useNavigate()
 
     const getData = ()=>{
@@ -39,35 +38,29 @@ const MarvelHeroes = () => {
     },[])
     
     const handleDelete = (id)=>{
-        if(isAuth){
-            axios.delete(`${baseURL}/marvel/delete/${id}`,{
-                headers: {
-                  'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))}`
-                }
-              })
-            .then((res)=>{
-                if(res.data.msg == "You are not authorized to do this action"){
-                    alert("Either you're not login or You are not authorized to do this action")
-                }else{
-                    alert("An Avenger has been deleted")
-                }
-                getData()
-            })
-            .catch((err)=>{
-                alert("Either you are not login or You are not authorized to do this task")
-                console.log(err)
-            })
-        }else{
+        axios.delete(`${baseURL}/marvel/delete/${id}`,{
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          })
+        .then((res)=>{
+            if(res.data.msg == "You are not authorized to do this action"){
+                alert("You are not authorized to do this action")
+            }else{
+                alert("An Avenger has been deleted")
+            }
+            getData()
+        })
+        .catch((err)=>{
             alert("Please login first")
-            return navigate('/signin')
-        }
-
+            navigate("/signin")
+        })
     }
 
     
 
   return (
-    <Box bg={'black'} height={'8000px'} >
+    <Box bg={'black'} height={'8000px'}>
         <Flex justifyContent="flex-end" alignItems="center" mr={3} mt={3} >
         <RouterLink to='/addavenger' >
             <Button bg={'green.500'} color={'white'} textAlign={'right'} >
@@ -75,14 +68,14 @@ const MarvelHeroes = () => {
             </Button>
         </RouterLink>
         </Flex>
-        <Box color={'white'} p={20} pt={5} display={'grid'} gridTemplateColumns={'repeat(3,1fr)'} gap={'5px'} >
+        <Box color={'white'} p={{base:5,sm:20}} pt={5} display={'grid'} gridTemplateColumns={{base:'repeat(2,1fr)',sm:'repeat(3,1fr)'}} gap={'5px'} >
         
         {
             marvelData.length==0?<Heading>Loading...</Heading>: marvelData?.map((el)=>(
             <Box
                 key={el._id}
-                w={{base : "170px",  md : "320px"}}
-                h={{base : "360px" , md : "520px"}}
+                w={{base : "90%",  md : "320px"}}
+                h={{base : "500px" , md : "520px"}}
                 textAlign={'center'}
                 mb={10}
                 cursor={'pointer'}
@@ -96,9 +89,13 @@ const MarvelHeroes = () => {
             <Text fontSize={'14px'} my={1} >Actor Name : <span style={{fontWeight:'bold'}} >{el.actor_name}</span></Text>
             <Text fontSize={'14px'} my={1} >Posted By : {el.posted_by}</Text>
             <Text fontSize={'14px'} my={1} >UserID : {el.user_id}</Text>
-            <HStack justifyContent={'space-evenly'} mt={4} >
-                <RouterLink to={`/editmarvel/${el._id}`} ><Button width={'80px'} bg={'green.400'} > <Icon as={FaEdit} mr={1} /> Edit</Button></RouterLink>
-                <Button width={'90px'} bg={'red.400'} onClick={()=>handleDelete(el._id)} > <Icon as={RiDeleteBinLine} mr={1} /> Delete</Button>
+            <HStack justifyContent={'space-evenly'} mt={4}direction={{base:'row',sm:'column'}} >
+                <Box>
+                    <RouterLink to={`/editmarvel/${el._id}`} ><Button width={'80px'} bg={'green.400'} > <Icon as={FaEdit} mr={1} /> Edit</Button></RouterLink>
+                </Box>
+                <Box>
+                    <Button width={'90px'} bg={'red.400'} onClick={()=>handleDelete(el._id)} > <Icon as={RiDeleteBinLine} mr={1} /> Delete</Button>
+                </Box>
             </HStack>
             </Box>
         </Box>

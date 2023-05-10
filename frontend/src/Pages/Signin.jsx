@@ -10,21 +10,25 @@ import {
   Button,
   Heading,
   useColorModeValue,
-  Image
+  Image,
+  VStack,
+  useToast
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/authContext';
 import { baseURL } from '../BaseURL';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function Signin() {
 
   const [email,setEmail] = useState("")
   const [pass,setPass] = useState("")
   const navigate = useNavigate()
-  const {setIsAuth} = useContext(AuthContext)
+  // const {setIsAuth,setUsername} = useContext(AuthContext)
   const [isLoading,setIsLoading] = useState(false)
+  const toast = useToast()
   
   const handleClick = ()=>{
     let payload = {
@@ -34,10 +38,10 @@ export default function Signin() {
     setIsLoading(true)
     axios.post(`${baseURL}/user/signin`,payload)
     .then((res)=>{
-      localStorage.setItem("token",JSON.stringify(res.data.token))
-      setIsAuth(true)
+      localStorage.setItem("token",res.data.token)
+      localStorage.setItem("username",res.data.username)
       setIsLoading(false)
-      alert("login successfull")
+      alert("Login Successfull")
       navigate("/")
     })
     .catch((err)=>{
@@ -74,13 +78,14 @@ export default function Signin() {
               <Input color={'white'} type="password" onChange={(e)=>setPass(e.target.value)}/>
             </FormControl>
             <Stack spacing={10}>
-              <Stack
+              <VStack
                 direction={{ base: 'column', sm: 'row' }}
                 align={'start'}
                 justify={'space-between'}>
                 <Checkbox color={'white'} >Remember me</Checkbox>
                 <Link color={'blue.400'}>Forgot password?</Link>
-              </Stack>
+                <Box color={'blue.400'}><RouterLink to='/signup' >Create an Account</RouterLink></Box>
+              </VStack>
               <Button
                 isLoading={isLoading}
                 loadingText='Bring me THANOS'
