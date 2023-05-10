@@ -14,7 +14,7 @@ import { Link as RouterLink} from 'react-router-dom';
         w={'full'}
         h={'100vh'}
         backgroundImage={
-          'https://trumpwallpapers.com/wp-content/uploads/Marvel-Wallpaper-04-3840-x-2160.jpg'
+          'https://i.pinimg.com/564x/ce/ac/d2/ceacd2ac9ebb00fa88f12d924dc4fc31.jpg'
         }
         backgroundSize={'cover'}
         backgroundPosition={'center center'}>
@@ -25,11 +25,11 @@ import { Link as RouterLink} from 'react-router-dom';
           bgGradient={'linear(to-r, blackAlpha.600, transparent)'}>
           <Stack maxW={'2xl'} align={'flex-start'} spacing={6}>
             <Text
-              color={'white'}
-              fontWeight={700}
-              lineHeight={1.2}
-              fontSize={useBreakpointValue({ base: '3xl', md: '4xl' })}>
-              You are Still WORTHY...!
+              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              bgClip='text'
+              fontSize='4xl'
+              fontWeight='extrabold'>
+              You are Still WORTHY...3000!
             </Text>
             <Stack direction={'row'} >
             <RouterLink to='/marvelheroes' >
