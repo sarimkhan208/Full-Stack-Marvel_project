@@ -72,7 +72,7 @@ import { useContext } from 'react';
               _hover={{bg:'black'}}
               onClick={onToggle}
               icon={
-                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon _hover={{bg:'black'}} color='red' w={5} h={5} />
+                isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon _hover={{bg:'black'}} color='#e23636' w={5} h={5} />
               }
               variant={'ghost'}
               aria-label={'Toggle Navigation'}
